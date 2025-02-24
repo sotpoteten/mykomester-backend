@@ -1,5 +1,9 @@
 package no.ntnu.isaksj.backend.model;
 
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -20,6 +24,10 @@ public class User {
 
     @Column
     private String lastName;
+
+    @OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL)
+    @JsonManagedReference(value = "user-quiz")
+    private List<Quiz> quizzes;
 
     public Long getId() {
         return id;
