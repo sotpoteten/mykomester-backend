@@ -30,6 +30,11 @@ public class Task {
     @JsonBackReference(value = "quiz-task")
     private Quiz quiz;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "species_id")
+    @JsonBackReference(value = "species-task")
+    private Species species;
 
 
+    
 }
