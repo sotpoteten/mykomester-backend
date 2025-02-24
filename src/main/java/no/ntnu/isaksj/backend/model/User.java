@@ -68,4 +68,12 @@ public class User {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
+
+    public List<Quiz> getQuizzes() {
+        return quizzes;
+    }
+
+    public void setQuizzes(List<Quiz> quizzes) {
+        this.quizzes = quizzes;
+    }
 }

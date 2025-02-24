@@ -1,8 +1,10 @@
 package no.ntnu.isaksj.backend.model;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.*;
 import no.ntnu.isaksj.backend.enums.AnswerMode;
@@ -41,6 +43,10 @@ public class Quiz {
     @JoinColumn(name = "user_id")
     @JsonBackReference(value = "user-quiz")
     private User user;
+
+    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL)
+    @JsonManagedReference(value = "quiz-task")
+    private List<Task> tasks;
 
     public Long getId() {
         return id;
@@ -104,5 +110,13 @@ public class Quiz {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public List<Task> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
     }
 }
