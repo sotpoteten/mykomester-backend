@@ -12,14 +12,14 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @Column(nullable = false)
     private String pictureUrl;
 
     @Column
     private String answeredSpecies;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column
     private Normliststatus answeredCategory;
 
     @Column
