@@ -1,5 +1,7 @@
 package no.ntnu.isaksj.backend.model;
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.*;
@@ -25,6 +27,10 @@ public class Species {
     @OneToOne(mappedBy = "species")
     @JsonManagedReference(value = "species-task")
     private Task task;
+
+    @OneToMany(mappedBy = "picture", cascade = CascadeType.ALL)
+    @JsonManagedReference(value = "species-picture")
+    private List<Picture> pictures;
 
     public Long getId() {
         return id;
