@@ -29,6 +29,10 @@ public class User {
     @JsonManagedReference(value = "user-quiz")
     private List<Quiz> quizzes;
 
+    @OneToOne(mappedBy = "user")
+    @JsonManagedReference(value = "user-user_settings")
+    private UserSettings userSettings;
+
     public Long getId() {
         return id;
     }
