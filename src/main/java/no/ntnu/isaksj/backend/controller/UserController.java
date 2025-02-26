@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -36,4 +38,18 @@ public class UserController {
         userService.setPasswordToNull(addedUser);
         return new ResponseEntity<>(addedUser, HttpStatus.CREATED);
     }    
+
+    @PutMapping("/users/{email}")
+    public ResponseEntity<Object> updateUser(@PathVariable String email, @RequestBody User user) {
+        User oldUser = userService.findByEmail(email);
+
+        if (oldUser == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        user.setId(oldUser.getId());
+        user = userService.updateUser(user);
+        userService.setPasswordToNull(user);
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
 }
