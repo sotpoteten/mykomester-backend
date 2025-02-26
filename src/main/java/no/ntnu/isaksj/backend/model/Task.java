@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 import no.ntnu.isaksj.backend.enums.Normliststatus;
 
 @Entity
-@Table(name="task")
+@Table(name = "task")
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,6 +14,9 @@ public class Task {
 
     @Column(nullable = false)
     private String pictureUrl;
+
+    @Column(nullable = false)
+    private String photographer;
 
     @Column
     private String answeredSpecies;

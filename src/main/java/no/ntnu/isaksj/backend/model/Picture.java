@@ -14,6 +14,9 @@ public class Picture {
     @Column(nullable = false)
     private String url;
 
+    @Column(nullable = false)
+    private String photographer;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "species_id")
     @JsonBackReference(value = "species-picture")

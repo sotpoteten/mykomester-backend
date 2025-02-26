@@ -25,7 +25,7 @@ public class User {
     @Column
     private String lastName;
 
-    @OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonManagedReference(value = "user-quiz")
     private List<Quiz> quizzes;
 

@@ -44,7 +44,7 @@ public class Quiz {
     @JsonBackReference(value = "user-quiz")
     private User user;
 
-    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL)
     @JsonManagedReference(value = "quiz-task")
     private List<Task> tasks;
 
