@@ -45,4 +45,12 @@ public class Picture {
     public void setSpecies(Species species) {
         this.species = species;
     }
+
+    public String getPhotographer() {
+        return photographer;
+    }
+
+    public void setPhotographer(String photographer) {
+        this.photographer = photographer;
+    }
 }

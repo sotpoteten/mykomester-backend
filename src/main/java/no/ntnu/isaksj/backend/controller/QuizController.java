@@ -40,7 +40,9 @@ public class QuizController {
     @PostMapping("/quizzes")
     public ResponseEntity<Quiz> addQuiz(@RequestBody Quiz quiz) {
         Quiz addedQuiz = quizService.updateQuiz(quiz);
-        return new ResponseEntity<Quiz>(addedQuiz, HttpStatus.CREATED);
+        quiz = quizService.createQuiz(addedQuiz);
+        quiz = quizService.updateQuiz(quiz);
+        return new ResponseEntity<Quiz>(quiz, HttpStatus.CREATED);
     } 
 
     @PutMapping("/quizzes/{id}")

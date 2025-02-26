@@ -24,9 +24,9 @@ public class Species {
     @Column
     private String note;
 
-    @OneToOne(mappedBy = "species")
+    @OneToMany(mappedBy = "species", cascade = CascadeType.ALL)
     @JsonManagedReference(value = "species-task")
-    private Task task;
+    private List<Task> tasks;
 
     @OneToMany(mappedBy = "species", cascade = CascadeType.ALL)
     @JsonManagedReference(value = "species-picture")
