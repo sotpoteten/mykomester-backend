@@ -33,8 +33,7 @@ public class UserController {
         }
 
         User addedUser = userService.updateUser(user);
-
+        userService.setPasswordToNull(addedUser);
         return new ResponseEntity<>(addedUser, HttpStatus.CREATED);
-    }
-    
+    }    
 }
