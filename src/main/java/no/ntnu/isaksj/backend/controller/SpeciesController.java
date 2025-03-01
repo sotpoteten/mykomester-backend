@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -16,9 +17,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import no.ntnu.isaksj.backend.enums.Normliststatus;
 import no.ntnu.isaksj.backend.model.Picture;
 import no.ntnu.isaksj.backend.model.Species;
 import no.ntnu.isaksj.backend.service.PictureService;
@@ -34,6 +38,29 @@ public class SpeciesController {
     private PictureService pictureService;
 
     Logger logger = LoggerFactory.getLogger(SpeciesController.class);
+
+    @PostMapping("add_species_json")
+    public ResponseEntity<String> addSpeciesFromJson(@RequestBody Object[] object) {
+        JSONArray jsonArray = new JSONArray(object);
+
+        for(int i = 0; i < jsonArray.length(); i++) {
+            JSONObject shroom = jsonArray.getJSONObject(i);
+
+            if (!checkForDuplicate(shroom.getString("latinsknavn"))) {
+                Species newSpecies = new Species();
+                newSpecies.setName(shroom.getString("norsknavn") + " (" + shroom.getString("latinsknavn") + ")");
+                newSpecies.setCategory(Normliststatus.getStatusFromString(shroom.getString("normstatus")));
+                try {
+                    newSpecies.setNote(shroom.getString("kommentar"));
+                } catch (JSONException e) {
+                    // No comment set for current species. Continue execution.
+                }
+                speciesService.updateSpecies(newSpecies);
+            }            
+        }
+
+        return new ResponseEntity<>("Lagt til nye arter i databasen", HttpStatus.OK);
+    }
 
     @GetMapping("/update_species_pictures")
     public ResponseEntity<String> updateSpeciesPictures() {
@@ -69,8 +96,8 @@ public class SpeciesController {
         try {
             r = array.getJSONObject(0).getInt("ValidScientificNameId");
         } catch (JSONException e1) {
-            String popularName = species.getName();
-            String scientificName = popularName.substring(popularName.indexOf("(")+1, popularName.indexOf(")"));
+            String fullName = species.getName();
+            String scientificName = fullName.substring(fullName.indexOf("(")+1, fullName.indexOf(")"));
             uri = "https://artskart.artsdatabanken.no/publicapi/api/taxon?term=" + scientificName + "&taxonGroups=9";
             restTemplate = new RestTemplate();
             response = restTemplate.getForObject(uri, Object[].class);
@@ -110,5 +137,17 @@ public class SpeciesController {
 
         }
         return true;
+    }
+
+    public boolean checkForDuplicate(String latinName) {
+        List<Species> allSpecies = speciesService.findAll();
+        for (Species s : allSpecies) {
+            String fullName = s.getName();
+            String scientificName = fullName.substring(fullName.indexOf("(")+1, fullName.indexOf(")"));
+            if (latinName.equals(scientificName)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
