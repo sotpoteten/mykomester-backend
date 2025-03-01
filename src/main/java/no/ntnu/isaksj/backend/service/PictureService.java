@@ -27,4 +27,8 @@ public class PictureService {
     public List<Picture> findAllPicturesBySpecies(Species species) {
         return pictureRepository.findAllBySpecies(species);
     }
+
+    public void deleteAll() {
+        pictureRepository.deleteAll();
+    }
 }
