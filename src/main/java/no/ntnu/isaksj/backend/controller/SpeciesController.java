@@ -88,6 +88,11 @@ public class SpeciesController {
     }
 
     public int getScientificId(Species species) {
+        int manualId = getManualId(species);
+        if (manualId != 0) {
+            return manualId;
+        }
+
         String uri = "https://artskart.artsdatabanken.no/publicapi/api/taxon?term=" + species.getName() + "&taxonGroups=9";
         RestTemplate restTemplate = new RestTemplate();
         Object[] response = restTemplate.getForObject(uri, Object[].class);
@@ -117,7 +122,7 @@ public class SpeciesController {
         try {
             doc = Jsoup.parse(new URL(url).openStream(),"UTF-8", url);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.warn("Feilet å hente bilder for " + species.getName() + " med id " + scientificId);
             return false;
         }
 
@@ -149,5 +154,48 @@ public class SpeciesController {
             }
         }
         return false;
+    }
+
+    public int getManualId(Species species) {
+        String name = species.getName();
+
+        switch (name) {
+            case "Besk rørsopp (Caloboletus calopus)":
+                return 55941;
+            case "engvokssopp (Cuphophyllus pratensis)":
+                return 54006;
+            case "ildrørsopp (Suillellus luridus)":
+                return 55954;
+            case "svartbrun rørsopp (Imleria badia)":
+                return 56023;
+            case "blek piggsopp (Hydnum repandum)":
+                return 56280;
+            case "mandelriske (Lactifluus volemus)":
+                return 57661;
+            case "hvit knippesopp (Leucocybe connata)":
+                return 55365;
+            case "blodrørsopp (Neoboletus praestigiator)":
+                return 55950;
+            case "lodden hvitriske (Lactifluus vellereus)":
+                return 57657;
+            case "hvit pepperriske (Lactifluus piperatus)":
+                return 57619;
+            case "vårtrevlesopp (Inosperma erubescens)":
+                return 53137;
+            case "gul fluesopp (Amanita citrina)":
+                return 52126;
+            case "grå knippesopp (Lyophyllum decastes)":
+                return 54379;
+            case "rødnende parasollsopp (Chlorophyllum rhacodes)":
+                return 51978;
+            case "rabarbrasopp (Chroogomphus rutilus)":
+                return 56056;
+            case "kjempetraktmusserong (Aspropaxillus giganteus)":
+                return 55472;
+            case "brun fluesopp (Amanita regalis)":
+                return 52149;
+            default:
+                return 0;
+        }
     }
 }
