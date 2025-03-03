@@ -37,8 +37,26 @@ public class QuizController {
         return new ResponseEntity<>(quizzes, HttpStatus.OK);
     }
 
-    @PostMapping("/quizzes")
-    public ResponseEntity<Quiz> addQuiz(@RequestBody Quiz quiz) {
+    @GetMapping("/quizzes/user/latest/{email}")
+    public ResponseEntity<Quiz> getLatestQuizByUser(@PathVariable String email) {
+        User user = userService.findByEmail(email);
+
+        if (user == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        List<Quiz> quizzes = quizService.findAllQuizzesByUser(user);
+        return new ResponseEntity<>(quizzes.get(quizzes.size() - 1), HttpStatus.OK);
+    }
+
+    @PostMapping("/quizzes/user/{email}")
+    public ResponseEntity<Quiz> addQuiz(@PathVariable String email, @RequestBody Quiz quiz) {
+        User user = userService.findByEmail(email);
+
+        if (user == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        quiz.setUser(user);
+        
         Quiz addedQuiz = quizService.updateQuiz(quiz);
         quiz = quizService.createQuiz(addedQuiz);
         quiz = quizService.updateQuiz(quiz);
