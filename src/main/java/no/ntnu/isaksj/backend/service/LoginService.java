@@ -15,7 +15,7 @@ import no.ntnu.isaksj.backend.model.User;
 @Service
 public class LoginService {
     public static final String KEY_STR = "jksadjdksankjcankjfujfpewkdsæadskamd3uiiewnekwfoidmfdøs391m";
-    private static final Duration JWT_TOKEN_VALIDITY = Duration.ofMinutes(15);
+    private static final Duration JWT_TOKEN_VALIDITY = Duration.ofMinutes(180);
 
     @Autowired
     private UserService userService;
