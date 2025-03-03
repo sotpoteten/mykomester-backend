@@ -39,7 +39,15 @@ public class SpeciesController {
 
     Logger logger = LoggerFactory.getLogger(SpeciesController.class);
 
-    @PostMapping("add_species_json")
+    @GetMapping("/species_names")
+    public ResponseEntity<List<String>> getAllSpeciesNames() {
+        List<Species> allSpecies = speciesService.findAll();
+        List<String> allNames = new ArrayList<>();
+        allSpecies.forEach(s -> allNames.add(s.getName()));
+        return new ResponseEntity<List<String>>(allNames, HttpStatus.OK);
+    }
+
+    @PostMapping("/add_species_json")
     public ResponseEntity<String> addSpeciesFromJson(@RequestBody Object[] object) {
         JSONArray jsonArray = new JSONArray(object);
 
