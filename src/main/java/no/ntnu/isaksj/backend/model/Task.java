@@ -28,6 +28,12 @@ public class Task {
     @Column
     private String answeredNote;
 
+    @Column
+    private boolean correctSpecies;
+
+    @Column
+    private boolean correctCategory;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "quiz_id")
     @JsonBackReference(value = "quiz-task")
@@ -100,5 +106,21 @@ public class Task {
 
     public void setPhotographer(String photographer) {
         this.photographer = photographer;
+    }
+
+    public boolean isCorrectSpecies() {
+        return correctSpecies;
+    }
+
+    public void setCorrectSpecies(boolean correctSpecies) {
+        this.correctSpecies = correctSpecies;
+    }
+
+    public boolean isCorrectCategory() {
+        return correctCategory;
+    }
+
+    public void setCorrectCategory(boolean correctCategory) {
+        this.correctCategory = correctCategory;
     }
 }
