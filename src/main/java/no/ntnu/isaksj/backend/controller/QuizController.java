@@ -11,8 +11,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import no.ntnu.isaksj.backend.model.Quiz;
+import no.ntnu.isaksj.backend.model.Task;
 import no.ntnu.isaksj.backend.model.User;
 import no.ntnu.isaksj.backend.service.QuizService;
 import no.ntnu.isaksj.backend.service.UserService;
@@ -24,6 +27,8 @@ public class QuizController {
 
     @Autowired
     private UserService userService;
+
+    Logger logger = LoggerFactory.getLogger(QuizController.class);
 
     @GetMapping("/quizzes/user/{email}")
     public ResponseEntity<List<Quiz>> getAllQuizzesByUser(@PathVariable String email) {
@@ -56,7 +61,7 @@ public class QuizController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         quiz.setUser(user);
-        
+
         Quiz addedQuiz = quizService.updateQuiz(quiz);
         quiz = quizService.createQuiz(addedQuiz);
         quiz = quizService.updateQuiz(quiz);
@@ -66,9 +71,12 @@ public class QuizController {
     @PutMapping("/quizzes/{id}")
     public ResponseEntity<Quiz> updateQuiz(@PathVariable Long id, @RequestBody Quiz quiz) {
         Quiz oldQuiz = quizService.findById(id);
+        List<Task> tasks = quiz.getTasks();
 
         if (oldQuiz != null) {
             quiz.setId(oldQuiz.getId());
+            quiz.setUser(oldQuiz.getUser());
+            quiz = quizService.calculatePoints(quiz, tasks);
 
             quiz = quizService.updateQuiz(quiz);
             return new ResponseEntity<>(quiz, HttpStatus.OK);

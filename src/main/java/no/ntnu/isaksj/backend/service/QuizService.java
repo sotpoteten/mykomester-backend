@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import no.ntnu.isaksj.backend.enums.QuizContent;
 import no.ntnu.isaksj.backend.model.Quiz;
 import no.ntnu.isaksj.backend.model.Species;
+import no.ntnu.isaksj.backend.model.Task;
 import no.ntnu.isaksj.backend.model.User;
 import no.ntnu.isaksj.backend.repository.QuizRepository;
 
@@ -51,6 +52,30 @@ public class QuizService {
             taskService.createTask(speciesList, quiz);
         }
 
+        return quiz;
+    }
+
+    public Quiz calculatePoints(Quiz quiz, List<Task> tasks) {
+        int points = 0;
+
+        for (Task t : tasks) {
+            t.setSpecies(taskService.findById(t.getId()).getSpecies());
+            if (t.getAnsweredSpecies() != null) {
+                if (t.getAnsweredSpecies().equals(t.getSpecies().getName())) {
+                    points += 2;
+                    t.setCorrectSpecies(true);
+
+                    if (t.getAnsweredCategory() != null) {
+                        if (t.getAnsweredCategory() == t.getSpecies().getCategory()) {
+                            points += 1;
+                            t.setCorrectCategory(true);
+                        }
+                    }
+                }
+            } 
+        }
+
+        quiz.setPoints(points);
         return quiz;
     }
 }

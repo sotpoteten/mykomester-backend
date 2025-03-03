@@ -38,6 +38,8 @@ public class TaskService {
     public Task createTask(List<Species> speciesList, Quiz quiz) {
         Task newTask = new Task();
         newTask.setQuiz(quiz);
+        newTask.setCorrectCategory(false);
+        newTask.setCorrectSpecies(false);
         Random random = new Random();
         Species species = speciesList.get(random.nextInt(speciesList.size()));
         newTask.setSpecies(species);

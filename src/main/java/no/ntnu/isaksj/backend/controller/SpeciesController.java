@@ -168,7 +168,7 @@ public class SpeciesController {
         String name = species.getName();
 
         switch (name) {
-            case "Besk rørsopp (Caloboletus calopus)":
+            case "besk rørsopp (Caloboletus calopus)":
                 return 55941;
             case "engvokssopp (Cuphophyllus pratensis)":
                 return 54006;
