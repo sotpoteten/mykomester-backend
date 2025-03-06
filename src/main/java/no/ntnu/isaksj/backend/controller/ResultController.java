@@ -72,6 +72,7 @@ public class ResultController {
             Result result = new Result();
             result.setScore(allQuizzes.get(cnt).getPoints());
             result.setMaxScore(allQuizzes.get(cnt).getNrOfTasks() * 3);
+            result.setDateFinished(allQuizzes.get(cnt).getTimeFinished());
             tenLastResults.add(result);
             cnt++;
         }
