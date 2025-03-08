@@ -43,6 +43,7 @@ public class UserSettingsController {
         }
 
         UserSettings oldUserSettings = userSettingsService.findByUser(user);
+        userSettings.setUser(user);
         userSettings.setId(oldUserSettings.getId());
         userSettings = userSettingsService.updateUserSettings(userSettings);
         return new ResponseEntity<UserSettings>(userSettings, HttpStatus.OK);
