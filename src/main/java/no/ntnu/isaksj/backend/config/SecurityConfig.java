@@ -32,7 +32,7 @@ public class SecurityConfig {
         .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry -> {
           authorizationManagerRequestMatcherRegistry.requestMatchers("/login").permitAll();
           authorizationManagerRequestMatcherRegistry.requestMatchers(HttpMethod.POST, "/users").permitAll();
-          authorizationManagerRequestMatcherRegistry.requestMatchers(HttpMethod.POST, "/forgot_password").permitAll();
+          authorizationManagerRequestMatcherRegistry.requestMatchers(HttpMethod.POST, "/glemt_passord").permitAll();
           authorizationManagerRequestMatcherRegistry.requestMatchers("/**").authenticated();
         })
         .httpBasic(Customizer.withDefaults())
