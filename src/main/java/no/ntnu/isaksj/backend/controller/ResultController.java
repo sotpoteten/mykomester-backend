@@ -50,6 +50,8 @@ public class ResultController {
             answer.setAnsweredNote(t.getSpecies().getNote());
             answer.setSpeciesCorrect(t.isCorrectSpecies());
             answer.setCategoryCorrect(t.isCorrectCategory());
+            answer.setPictureUrl(t.getPictureUrl());
+            answer.setPhotographer(t.getPhotographer());
             
             answers.add(answer);
         }
