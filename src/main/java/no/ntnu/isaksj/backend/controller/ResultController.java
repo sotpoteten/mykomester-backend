@@ -47,7 +47,7 @@ public class ResultController {
             answer.setAnsweredNote(t.getAnsweredNote());
             answer.setCorrectSpecies(t.getSpecies().getName());
             answer.setCorrectCategory(t.getSpecies().getCategory());
-            answer.setAnsweredNote(t.getSpecies().getNote());
+            answer.setCorrectNote(t.getSpecies().getNote());
             answer.setSpeciesCorrect(t.isCorrectSpecies());
             answer.setCategoryCorrect(t.isCorrectCategory());
             answer.setPictureUrl(t.getPictureUrl());
