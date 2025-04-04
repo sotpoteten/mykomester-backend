@@ -68,15 +68,21 @@ public class ResultController {
         }
         List<Quiz> allQuizzes = quizService.findAllQuizzesByUser(user);
         int cnt = 0;
+        int cntFinished = 0;
         List<Result> tenLastResults = new ArrayList<>();
 
-        while (allQuizzes.size() > cnt && cnt < 10) {
+        while (allQuizzes.size() > cnt && cntFinished < 10) {
+            if (allQuizzes.get(cnt).getTimeFinished() == null) {
+                cnt++;
+                continue;
+            }
             Result result = new Result();
             result.setScore(allQuizzes.get(cnt).getPoints());
             result.setMaxScore(allQuizzes.get(cnt).getNrOfTasks() * 3);
             result.setDateFinished(allQuizzes.get(cnt).getTimeFinished());
             tenLastResults.add(result);
             cnt++;
+            cntFinished++;
         }
         return new ResponseEntity<>(tenLastResults, HttpStatus.OK);
     }
