@@ -74,20 +74,6 @@ public class LoginService {
         digitRule.setNumberOfCharacters(2);
         rules.add(digitRule);
 
-        CharacterData specialChars = new CharacterData() {
-        public String getErrorCode() {
-            return "ERROR_CODE"; // TODO Return suitable error-code
-        }
-
-        public String getCharacters() {
-            return "!@#$%^&*()_+";
-        }
-        };
-
-        CharacterRule specialCharacterRule = new CharacterRule(specialChars);
-        specialCharacterRule.setNumberOfCharacters(2);
-        rules.add(specialCharacterRule);
-
-        return gen.generatePassword(12, rules);
+        return gen.generatePassword(8, rules);
     }
 }
