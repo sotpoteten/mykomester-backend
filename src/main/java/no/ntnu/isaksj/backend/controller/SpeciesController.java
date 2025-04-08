@@ -202,6 +202,8 @@ public class SpeciesController {
                 return 55472;
             case "brun fluesopp (Amanita regalis)":
                 return 52149;
+            case "grønn fluesopp (Amanita phalloides)":
+                return 52156;
             default:
                 return 0;
         }
