@@ -1,11 +1,13 @@
 package no.ntnu.isaksj.backend.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import no.ntnu.isaksj.backend.enums.Normliststatus;
 import no.ntnu.isaksj.backend.enums.QuizContent;
 import no.ntnu.isaksj.backend.model.Quiz;
 import no.ntnu.isaksj.backend.model.Species;
@@ -40,12 +42,32 @@ public class QuizService {
 
     public Quiz createQuiz(Quiz quiz) {
         int nrOfTasks = quiz.getNrOfTasks();
-        List<Species> speciesList;
+        List<Species> speciesList = speciesService.findAll();
 
-        if (quiz.getQuizContent() == QuizContent.HELE_PENSUM) {
-            speciesList = speciesService.findAll();
-        } else {
-            speciesList = speciesService.findAll();
+        if (quiz.getQuizContent() == QuizContent.SPISELIGE) {
+            List<Species> filtered = new ArrayList<>();
+            for (Species s : speciesList) {
+                if (s.getCategory() == Normliststatus.SPISELIG || s.getCategory() == Normliststatus.SPISELIG_MED_MERKNAD) {
+                    filtered.add(s);
+                }
+            }
+            speciesList = filtered;
+        } else if (quiz.getQuizContent() == QuizContent.IKKE_MATSOPP) {
+            List<Species> filtered = new ArrayList<>();
+            for (Species s : speciesList) {
+                if (s.getCategory() == Normliststatus.IKKE_MATSOPP) {
+                    filtered.add(s);
+                }
+            }
+            speciesList = filtered;
+        } else if (quiz.getQuizContent() == QuizContent.GIFTIGE) {
+            List<Species> filtered = new ArrayList<>();
+            for (Species s : speciesList) {
+                if (s.getCategory() == Normliststatus.GIFTIG || s.getCategory() == Normliststatus.MEGET_GIFTIG) {
+                    filtered.add(s);
+                }
+            }
+            speciesList = filtered;
         }
 
         for (int i = 0; i < nrOfTasks; i++) {
