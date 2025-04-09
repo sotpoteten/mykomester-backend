@@ -13,6 +13,9 @@ public class Task {
     private Long id;
 
     @Column(nullable = false)
+    private String speciesName;
+
+    @Column(nullable = false)
     private String pictureUrl;
 
     @Column(nullable = false)
@@ -122,5 +125,13 @@ public class Task {
 
     public void setCorrectCategory(boolean correctCategory) {
         this.correctCategory = correctCategory;
+    }
+
+    public String getSpeciesName() {
+        return speciesName;
+    }
+
+    public void setSpeciesName(String speciesName) {
+        this.speciesName = speciesName;
     }
 }

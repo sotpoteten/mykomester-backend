@@ -43,6 +43,7 @@ public class TaskService {
         Random random = new Random();
         Species species = speciesList.get(random.nextInt(speciesList.size()));
         newTask.setSpecies(species);
+        newTask.setSpeciesName(species.getName());
         Picture picture = speciesService.getRandomPicture(species);
         newTask.setPictureUrl(picture.getUrl());
         newTask.setPhotographer(picture.getPhotographer());
