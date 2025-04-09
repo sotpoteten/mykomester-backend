@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import no.ntnu.isaksj.backend.enums.QuizMode;
 import no.ntnu.isaksj.backend.model.Answer;
 import no.ntnu.isaksj.backend.model.Quiz;
 import no.ntnu.isaksj.backend.model.Result;
@@ -38,7 +39,13 @@ public class ResultController {
 
         Result result = new Result();
         result.setScore(quiz.getPoints());
-        result.setMaxScore(quiz.getNrOfTasks() * 3);
+
+        if (quiz.getQuizMode().equals(QuizMode.STANDARD)) result.setMaxScore(quiz.getNrOfTasks() * 3);
+        else if (quiz.getQuizMode().equals(QuizMode.ARTSBESTEMMELSE)) result.setMaxScore(quiz.getNrOfTasks() * 2);
+        else if (quiz.getQuizMode().equals(QuizMode.NORMLISTESTATUS)) result.setMaxScore(quiz.getNrOfTasks());
+
+        result.setQuizMode(quiz.getQuizMode());
+
         List<Answer> answers = new ArrayList<>();
         for (Task t : quiz.getTasks()) {
             Answer answer = new Answer();
@@ -77,9 +84,14 @@ public class ResultController {
                 continue;
             }
             Result result = new Result();
-            result.setScore(allQuizzes.get(cnt).getPoints());
-            result.setMaxScore(allQuizzes.get(cnt).getNrOfTasks() * 3);
-            result.setDateFinished(allQuizzes.get(cnt).getTimeFinished());
+            Quiz quiz = allQuizzes.get(cnt);
+            result.setScore(quiz.getPoints());
+            
+            if (quiz.getQuizMode().equals(QuizMode.STANDARD)) result.setMaxScore(quiz.getNrOfTasks() * 3);
+            else if (quiz.getQuizMode().equals(QuizMode.ARTSBESTEMMELSE)) result.setMaxScore(quiz.getNrOfTasks() * 2);
+            else if (quiz.getQuizMode().equals(QuizMode.NORMLISTESTATUS)) result.setMaxScore(quiz.getNrOfTasks());
+
+            result.setDateFinished(quiz.getTimeFinished());
             tenLastResults.add(result);
             cnt++;
             cntFinished++;
