@@ -13,6 +13,7 @@ import no.ntnu.isaksj.backend.enums.QuizContent;
 import no.ntnu.isaksj.backend.enums.QuizMode;
 import no.ntnu.isaksj.backend.model.Quiz;
 import no.ntnu.isaksj.backend.model.Species;
+import no.ntnu.isaksj.backend.model.SpeciesStat;
 import no.ntnu.isaksj.backend.model.Task;
 import no.ntnu.isaksj.backend.model.User;
 import no.ntnu.isaksj.backend.repository.QuizRepository;
@@ -28,6 +29,9 @@ public class QuizService {
 
     @Autowired 
     private TaskService taskService;
+
+    @Autowired
+    private StatsService statsService;
 
     public Quiz updateQuiz(@NotNull Quiz quiz) {
         Quiz updatedQuiz = quizRepository.save(quiz);
@@ -87,6 +91,26 @@ public class QuizService {
         
         for (Species s : speciesList) {
             taskService.createTask(s, quiz);
+        }
+
+        return quiz;
+    }
+
+    public Quiz createWorstSpeciesQuiz(Quiz quiz) {
+        int nrOfTasks = quiz.getNrOfTasks();
+        List<SpeciesStat> speciesStats = statsService.calculateSpeciesStatsByUser(findAllQuizzesByUser(quiz.getUser()));
+
+        int percentile = Math.round(speciesStats.size() / 4);
+
+        List<SpeciesStat> worstSpecies = speciesStats.subList(0, percentile);
+        
+        List<Species> species = new ArrayList<>();
+        for (SpeciesStat ss : worstSpecies) {
+            species.add(speciesService.findById(ss.getSpeciesId()));
+        }
+
+        for (int i = 0; i < nrOfTasks; i++) {
+            taskService.createTask(species, quiz);
         }
 
         return quiz;

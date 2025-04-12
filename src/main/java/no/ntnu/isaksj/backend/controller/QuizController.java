@@ -57,10 +57,6 @@ public class QuizController {
     public ResponseEntity<Quiz> addQuiz(@PathVariable String email, @PathVariable String specials, @RequestBody Quiz quiz) {
         User user = userService.findByEmail(email);
 
-        if (specials != "") {
-            System.out.println(specials);
-        }
-
         if (user == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -70,6 +66,8 @@ public class QuizController {
 
         if (specials.equals("Alle pensumarter")) {
             quiz = quizService.createAllSpeciesQuiz(addedQuiz);
+        } else if (specials.equals("Dine dårligste arter")) {
+            quiz = quizService.createWorstSpeciesQuiz(addedQuiz);
         } else {
             quiz = quizService.createQuiz(addedQuiz);
         }
