@@ -1,6 +1,7 @@
 package no.ntnu.isaksj.backend.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
@@ -73,6 +74,19 @@ public class QuizService {
 
         for (int i = 0; i < nrOfTasks; i++) {
             taskService.createTask(speciesList, quiz);
+        }
+
+        return quiz;
+    }
+
+    public Quiz createAllSpeciesQuiz(Quiz quiz) {
+        List<Species> speciesList = speciesService.findAll();
+        Collections.shuffle(speciesList);
+
+        quiz.setNrOfTasks(speciesList.size());
+        
+        for (Species s : speciesList) {
+            taskService.createTask(s, quiz);
         }
 
         return quiz;

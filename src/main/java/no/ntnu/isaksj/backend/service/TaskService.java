@@ -50,4 +50,18 @@ public class TaskService {
         taskRepository.save(newTask);
         return newTask;
     }
+
+    public Task createTask(Species species, Quiz quiz) {
+        Task newTask = new Task();
+        newTask.setQuiz(quiz);
+        newTask.setCorrectCategory(false);
+        newTask.setCorrectSpecies(false);
+        newTask.setSpecies(species);
+        newTask.setSpeciesName(species.getName());
+        Picture picture = speciesService.getRandomPicture(species);
+        newTask.setPictureUrl(picture.getUrl());
+        newTask.setPhotographer(picture.getPhotographer());
+        taskRepository.save(newTask);
+        return newTask;
+    }
 }

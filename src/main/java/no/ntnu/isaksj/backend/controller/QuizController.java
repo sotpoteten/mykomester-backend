@@ -53,9 +53,13 @@ public class QuizController {
         return new ResponseEntity<>(quizzes.get(quizzes.size() - 1), HttpStatus.OK);
     }
 
-    @PostMapping("/quizzes/user/{email}")
-    public ResponseEntity<Quiz> addQuiz(@PathVariable String email, @RequestBody Quiz quiz) {
+    @PostMapping("/quizzes/user/{email}/{specials}")
+    public ResponseEntity<Quiz> addQuiz(@PathVariable String email, @PathVariable String specials, @RequestBody Quiz quiz) {
         User user = userService.findByEmail(email);
+
+        if (specials != "") {
+            System.out.println(specials);
+        }
 
         if (user == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -63,7 +67,13 @@ public class QuizController {
         quiz.setUser(user);
 
         Quiz addedQuiz = quizService.updateQuiz(quiz);
-        quiz = quizService.createQuiz(addedQuiz);
+
+        if (specials.equals("Alle pensumarter")) {
+            quiz = quizService.createAllSpeciesQuiz(addedQuiz);
+        } else {
+            quiz = quizService.createQuiz(addedQuiz);
+        }
+
         quiz = quizService.updateQuiz(quiz);
         return new ResponseEntity<Quiz>(quiz, HttpStatus.CREATED);
     } 
