@@ -94,4 +94,40 @@ public class StatsController {
         
         return new ResponseEntity<Stat>(stat, HttpStatus.OK);
     }
+
+    @GetMapping("/stats/nrofspecies/user/{email}")
+    public ResponseEntity<Integer> getNrOfSpeciesByUser(@PathVariable String email) {
+        User user = userService.findByEmail(email);
+
+        if (user == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        List<Quiz> allQuizzesByUser = quizService.findAllQuizzesByUser(user);
+        List<Task> allTasks = new ArrayList<>();
+
+        for (Quiz q : allQuizzesByUser) {
+            if (q.getTimeFinished() != null) {
+                allTasks.addAll(q.getTasks());
+            } 
+        }
+
+        List<Species> allSpecies = speciesService.findAll();
+        List<SpeciesStat> speciesStats = new ArrayList<>();
+        allSpecies.forEach(s -> speciesStats.add(new SpeciesStat(s.getId(),s.getName())));
+
+        for (Task t : allTasks) {
+            SpeciesStat s = speciesStats.stream().filter(stat -> t.getSpecies().getId() == stat.getSpeciesId()).findFirst().orElse(null);
+            int taskScore = 0;
+            if (!t.isCorrectSpecies()) taskScore = 0;
+            else if (t.isCorrectSpecies() && !t.isCorrectCategory()) taskScore = 2;
+            else taskScore = 3;
+            s.setMaxScore(s.getMaxScore() + 3);
+            s.setScore(s.getScore() + taskScore);
+        }
+
+        speciesStats.removeIf(s -> s.getMaxScore() == 0);
+
+        return new ResponseEntity<Integer>(speciesStats.size(), HttpStatus.OK);
+    }
 }
