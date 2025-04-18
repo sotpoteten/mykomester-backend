@@ -44,9 +44,21 @@ public class TaskService {
         Species species = speciesList.get(random.nextInt(speciesList.size()));
         newTask.setSpecies(species);
         newTask.setSpeciesName(species.getName());
-        Picture picture = speciesService.getRandomPicture(species);
-        newTask.setPictureUrl(picture.getUrl());
-        newTask.setPhotographer(picture.getPhotographer());
+    
+        String pictureUrls = "";
+        String photographers = "";
+        for (int i = 0; i < 3; i++) {
+            Picture picture = speciesService.getRandomPicture(species);
+            pictureUrls += picture.getUrl();
+            photographers += picture.getPhotographer();
+            if (i < 2) {
+                pictureUrls += ",";
+                photographers += ",";
+            }
+        }
+        newTask.setPictureUrls(pictureUrls);
+        newTask.setPhotographers(photographers);
+
         taskRepository.save(newTask);
         return newTask;
     }
@@ -58,9 +70,21 @@ public class TaskService {
         newTask.setCorrectSpecies(false);
         newTask.setSpecies(species);
         newTask.setSpeciesName(species.getName());
-        Picture picture = speciesService.getRandomPicture(species);
-        newTask.setPictureUrl(picture.getUrl());
-        newTask.setPhotographer(picture.getPhotographer());
+
+        String pictureUrls = "";
+        String photographers = "";
+        for (int i = 0; i < 3; i++) {
+            Picture picture = speciesService.getRandomPicture(species);
+            pictureUrls += picture.getUrl();
+            photographers += picture.getPhotographer();
+            if (i < 2) {
+                pictureUrls += ",";
+                photographers += ",";
+            }
+        }
+        newTask.setPictureUrls(pictureUrls);
+        newTask.setPhotographers(photographers);
+
         taskRepository.save(newTask);
         return newTask;
     }

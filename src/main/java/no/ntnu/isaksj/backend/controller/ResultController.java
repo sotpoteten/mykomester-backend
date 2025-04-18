@@ -57,8 +57,8 @@ public class ResultController {
             answer.setCorrectNote(t.getSpecies().getNote());
             answer.setSpeciesCorrect(t.isCorrectSpecies());
             answer.setCategoryCorrect(t.isCorrectCategory());
-            answer.setPictureUrl(t.getPictureUrl());
-            answer.setPhotographer(t.getPhotographer());
+            answer.setPictureUrl(t.getPictureUrls());
+            answer.setPhotographer(t.getPhotographers());
             
             answers.add(answer);
         }
