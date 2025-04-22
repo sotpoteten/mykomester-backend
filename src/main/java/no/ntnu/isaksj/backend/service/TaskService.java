@@ -47,8 +47,10 @@ public class TaskService {
     
         String pictureUrls = "";
         String photographers = "";
+        Picture[] usedPictures = {null, null, null};
         for (int i = 0; i < 3; i++) {
-            Picture picture = speciesService.getRandomPicture(species);
+            Picture picture = speciesService.getRandomUniquePicture(species, usedPictures);
+            usedPictures[i] = picture;
             pictureUrls += picture.getUrl();
             photographers += picture.getPhotographer();
             if (i < 2) {
@@ -73,8 +75,10 @@ public class TaskService {
 
         String pictureUrls = "";
         String photographers = "";
+        Picture[] usedPictures = {null, null, null};
         for (int i = 0; i < 3; i++) {
-            Picture picture = speciesService.getRandomPicture(species);
+            Picture picture = speciesService.getRandomUniquePicture(species, usedPictures);
+            usedPictures[i] = picture;
             pictureUrls += picture.getUrl();
             photographers += picture.getPhotographer();
             if (i < 2) {
