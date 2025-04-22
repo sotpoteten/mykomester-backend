@@ -140,6 +140,7 @@ public class SpeciesController {
         for(int i = 0; i < pics.size(); i++) {
             String src = pics.get(i).attr("abs:src");
             String fullPictureUrl = src.replace("thumbnail", "image");
+            fullPictureUrl = fullPictureUrl.replace("small", "large");
             String photoBy = photographers.get(i).text().substring(6);
             
             Picture picture = new Picture();
