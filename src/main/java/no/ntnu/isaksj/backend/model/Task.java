@@ -13,10 +13,13 @@ public class Task {
     private Long id;
 
     @Column(nullable = false)
-    private String pictureUrl;
+    private String speciesName;
 
-    @Column(nullable = false)
-    private String photographer;
+    @Column(nullable = false, columnDefinition = "TEXT")
+    private String pictureUrls;
+
+    @Column(nullable = false, columnDefinition = "TEXT")
+    private String photographers;
 
     @Column
     private String answeredSpecies;
@@ -52,12 +55,12 @@ public class Task {
         this.id = id;
     }
 
-    public String getPictureUrl() {
-        return pictureUrl;
+    public String getPictureUrls() {
+        return pictureUrls;
     }
 
-    public void setPictureUrl(String pictureUrl) {
-        this.pictureUrl = pictureUrl;
+    public void setPictureUrls(String pictureUrls) {
+        this.pictureUrls = pictureUrls;
     }
 
     public String getAnsweredSpecies() {
@@ -100,12 +103,12 @@ public class Task {
         this.species = species;
     }
 
-    public String getPhotographer() {
-        return photographer;
+    public String getPhotographers() {
+        return photographers;
     }
 
-    public void setPhotographer(String photographer) {
-        this.photographer = photographer;
+    public void setPhotographers(String photographers) {
+        this.photographers = photographers;
     }
 
     public boolean isCorrectSpecies() {
@@ -122,5 +125,13 @@ public class Task {
 
     public void setCorrectCategory(boolean correctCategory) {
         this.correctCategory = correctCategory;
+    }
+
+    public String getSpeciesName() {
+        return speciesName;
+    }
+
+    public void setSpeciesName(String speciesName) {
+        this.speciesName = speciesName;
     }
 }

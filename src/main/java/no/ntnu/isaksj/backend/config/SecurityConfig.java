@@ -30,6 +30,11 @@ public class SecurityConfig {
     http.csrf(AbstractHttpConfigurer::disable)
         .cors(Customizer.withDefaults())
         .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry -> {
+          authorizationManagerRequestMatcherRegistry.requestMatchers(
+          "/v3/api-docs/**",
+          "/swagger-ui/**",
+          "/swagger-ui.html"
+          ).permitAll();
           authorizationManagerRequestMatcherRegistry.requestMatchers("/login").permitAll();
           authorizationManagerRequestMatcherRegistry.requestMatchers(HttpMethod.POST, "/users").permitAll();
           authorizationManagerRequestMatcherRegistry.requestMatchers(HttpMethod.POST, "/glemt_passord").permitAll();

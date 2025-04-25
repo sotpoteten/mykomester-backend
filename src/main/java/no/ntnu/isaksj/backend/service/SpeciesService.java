@@ -33,11 +33,27 @@ public class SpeciesService {
         return speciesRepository.findAll();
     }
 
+    public void deleteSpecies(Species species) {
+        speciesRepository.delete(species);
+    }
+
     public Picture getRandomPicture(Species species) {
         List<Picture> pictures = pictureService.findAllPicturesBySpecies(species);
 
         Random random = new Random();
 
         return pictures.get(random.nextInt(pictures.size()));
+    }
+
+    public Picture getRandomUniquePicture(Species species, Picture[] usedPictures) {
+        List<Picture> pictures = pictureService.findAllPicturesBySpecies(species);
+        Random random = new Random();
+        int randInt = random.nextInt(pictures.size());
+
+        while (pictures.get(randInt).equals(usedPictures[0]) || pictures.get(randInt).equals(usedPictures[1])) {
+            randInt = random.nextInt(pictures.size());
+        }
+        
+        return pictures.get(randInt);
     }
 }

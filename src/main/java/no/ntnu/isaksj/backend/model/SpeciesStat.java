@@ -42,7 +42,7 @@ public class SpeciesStat implements Comparable<SpeciesStat> {
         this.speciesId = speciesId;
     }
     public void calculatePercentage() {
-        this.percentage = score / maxScore * 100;
+        this.percentage = ((double) score) / ((double) maxScore) * 100.0;
     }
     @Override
     public int compareTo(SpeciesStat o) {

@@ -43,9 +43,52 @@ public class TaskService {
         Random random = new Random();
         Species species = speciesList.get(random.nextInt(speciesList.size()));
         newTask.setSpecies(species);
-        Picture picture = speciesService.getRandomPicture(species);
-        newTask.setPictureUrl(picture.getUrl());
-        newTask.setPhotographer(picture.getPhotographer());
+        newTask.setSpeciesName(species.getName());
+    
+        String pictureUrls = "";
+        String photographers = "";
+        Picture[] usedPictures = {null, null, null};
+        for (int i = 0; i < 3; i++) {
+            Picture picture = speciesService.getRandomUniquePicture(species, usedPictures);
+            usedPictures[i] = picture;
+            pictureUrls += picture.getUrl();
+            photographers += picture.getPhotographer();
+            if (i < 2) {
+                pictureUrls += ",";
+                photographers += ",";
+            }
+        }
+        newTask.setPictureUrls(pictureUrls);
+        newTask.setPhotographers(photographers);
+
+        taskRepository.save(newTask);
+        return newTask;
+    }
+
+    public Task createTask(Species species, Quiz quiz) {
+        Task newTask = new Task();
+        newTask.setQuiz(quiz);
+        newTask.setCorrectCategory(false);
+        newTask.setCorrectSpecies(false);
+        newTask.setSpecies(species);
+        newTask.setSpeciesName(species.getName());
+
+        String pictureUrls = "";
+        String photographers = "";
+        Picture[] usedPictures = {null, null, null};
+        for (int i = 0; i < 3; i++) {
+            Picture picture = speciesService.getRandomUniquePicture(species, usedPictures);
+            usedPictures[i] = picture;
+            pictureUrls += picture.getUrl();
+            photographers += picture.getPhotographer();
+            if (i < 2) {
+                pictureUrls += ",";
+                photographers += ",";
+            }
+        }
+        newTask.setPictureUrls(pictureUrls);
+        newTask.setPhotographers(photographers);
+
         taskRepository.save(newTask);
         return newTask;
     }

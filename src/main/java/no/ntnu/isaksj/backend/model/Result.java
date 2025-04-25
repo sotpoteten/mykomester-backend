@@ -3,11 +3,14 @@ package no.ntnu.isaksj.backend.model;
 import java.time.LocalDate;
 import java.util.List;
 
+import no.ntnu.isaksj.backend.enums.QuizMode;
+
 public class Result {
     private int score;
     private int maxScore;
     private LocalDate dateFinished;
     private List<Answer> answers;
+    private QuizMode quizMode;
 
     public int getScore() {
         return score;
@@ -32,5 +35,11 @@ public class Result {
     }
     public void setDateFinished(LocalDate dateFinished) {
         this.dateFinished = dateFinished;
-    } 
+    }
+    public QuizMode getQuizMode() {
+        return quizMode;
+    }
+    public void setQuizMode(QuizMode quizMode) {
+        this.quizMode = quizMode;
+    }
 }

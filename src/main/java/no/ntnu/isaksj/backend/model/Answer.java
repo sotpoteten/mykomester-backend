@@ -11,6 +11,8 @@ public class Answer {
     private String correctNote;
     private boolean speciesCorrect;
     private boolean categoryCorrect;
+    private String pictureUrl;
+    private String photographer;
 
     public String getAnsweredSpecies() {
         return answeredSpecies;
@@ -59,5 +61,17 @@ public class Answer {
     }
     public void setCategoryCorrect(boolean categoryCorrect) {
         this.categoryCorrect = categoryCorrect;
+    }
+    public String getPictureUrl() {
+        return pictureUrl;
+    }
+    public void setPictureUrl(String pictureUrl) {
+        this.pictureUrl = pictureUrl;
+    }
+    public String getPhotographer() {
+        return photographer;
+    }
+    public void setPhotographer(String photographer) {
+        this.photographer = photographer;
     }
 }
