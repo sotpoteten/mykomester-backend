@@ -33,6 +33,10 @@ public class SpeciesService {
         return speciesRepository.findAll();
     }
 
+    public void deleteSpecies(Species species) {
+        speciesRepository.delete(species);
+    }
+
     public Picture getRandomPicture(Species species) {
         List<Picture> pictures = pictureService.findAllPicturesBySpecies(species);
 

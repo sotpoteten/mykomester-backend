@@ -18,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
@@ -68,6 +69,45 @@ public class SpeciesController {
         }
 
         return new ResponseEntity<>("Lagt til nye arter i databasen", HttpStatus.OK);
+    }
+
+    @PutMapping("/update_species_json")
+    public ResponseEntity<String> updateSpeciesFromJson(@RequestBody Object[] object) {
+        JSONArray jsonArray = new JSONArray(object);
+        List<Species> notUpdatedSpecies = speciesService.findAll();
+
+        for(int i = 0; i < jsonArray.length(); i++) {
+            JSONObject shroom = jsonArray.getJSONObject(i);
+            
+            Species species = findSpeciesByLatinName(shroom.getString("latinsknavn"));
+            if (species != null) {
+                notUpdatedSpecies.remove(species);
+                species.setName(shroom.getString("norsknavn") + " (" + shroom.getString("latinsknavn") + ")");
+                species.setCategory(Normliststatus.getStatusFromString(shroom.getString("normstatus")));
+                try {
+                    species.setNote(shroom.getString("kommentar"));
+                } catch (JSONException e) {
+                    // No comment set for current species. Continue execution.
+                }
+                speciesService.updateSpecies(species);
+            } else {
+                Species newSpecies = new Species();
+                newSpecies.setName(shroom.getString("norsknavn") + " (" + shroom.getString("latinsknavn") + ")");
+                newSpecies.setCategory(Normliststatus.getStatusFromString(shroom.getString("normstatus")));
+                try {
+                    newSpecies.setNote(shroom.getString("kommentar"));
+                } catch (JSONException e) {
+                    // No comment set for current species. Continue execution.
+                }
+                speciesService.updateSpecies(newSpecies);
+            }
+        }
+
+        for (Species s : notUpdatedSpecies) {
+            speciesService.deleteSpecies(s);
+        }
+
+        return new ResponseEntity<>("Oppdatert artene i databasen", HttpStatus.OK);
     }
 
     @GetMapping("/update_species_pictures")
@@ -163,6 +203,18 @@ public class SpeciesController {
             }
         }
         return false;
+    }
+
+    public Species findSpeciesByLatinName(String latinName) {
+        List<Species> allSpecies = speciesService.findAll();
+        for (Species s : allSpecies) {
+            String fullName = s.getName();
+            String scientificName = fullName.substring(fullName.indexOf("(")+1, fullName.indexOf(")"));
+            if (latinName.equals(scientificName)) {
+                return s;
+            }
+        }
+        return null;
     }
 
     public int getManualId(Species species) {
