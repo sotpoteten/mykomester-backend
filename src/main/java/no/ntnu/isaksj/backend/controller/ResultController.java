@@ -1,6 +1,7 @@
 package no.ntnu.isaksj.backend.controller;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,6 +75,7 @@ public class ResultController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         List<Quiz> allQuizzes = quizService.findAllQuizzesByUser(user);
+        Collections.reverse(allQuizzes);
         int cnt = 0;
         int cntFinished = 0;
         List<Result> tenLastResults = new ArrayList<>();
