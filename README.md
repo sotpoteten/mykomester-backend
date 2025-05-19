@@ -26,7 +26,7 @@ curl -v --header "Content-Type: application/json" --request POST --data '{"email
 Bytt ut ordet token med den du mottok etter forrige request
 
 ```sh
-curl -H "Authorization: Bearer token" -H "Content-Type: application/json" -v --request POST --data '[[
+curl -H "Authorization: Bearer token" -H "Content-Type: application/json" -v --request POST --data '[
   {
     "id": "25",
     "norsknavn": "ametystsopp",
