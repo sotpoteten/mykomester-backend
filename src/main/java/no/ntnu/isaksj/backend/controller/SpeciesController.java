@@ -223,7 +223,7 @@ public class SpeciesController {
         switch (name) {
             case "besk rørsopp (Caloboletus calopus)":
                 return 55941;
-            case "engvokssopp (Cuphophyllus pratensis)":
+            case "engvokssopp-gruppen (Cuphophyllus pratensis coll.)":
                 return 54006;
             case "ildrørsopp (Suillellus luridus)":
                 return 55954;
